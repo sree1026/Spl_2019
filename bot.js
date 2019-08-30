@@ -62,7 +62,23 @@ class Bot {
     result(data) {
         console.log("Game over ::", data.result);
     }
-
+    diagonalDefensive(rows, columns, boardInfo, oppChargeID) {
+        for (let i=0; i<rows; i++) {
+            // let diagonalSequenceCount = 0;
+            for (let j=0; j< columns; j++) {
+                if (i > 3 && boardInfo[i][j] === oppChargeID && boardInfo[i-1][j-1] === oppChargeID && boardInfo[i-2][j-2]=== oppChargeID) {
+                    if (boardInfo[i+1][j+1] === 0) {
+                        return [i+1, j+1];
+                    }
+                } else if (i > 3 && boardInfo[i][j] === oppChargeID && boardInfo[i-1][j+1] === oppChargeID && boardInfo[i-2][j+2] === oppChargeID) {
+                    if (boardInfo[i+1][j-1] === 0) {
+                        return [i+1, j-1];
+                    }
+                }
+            }
+        }
+        return [];
+    }
     horizontalDefensive(rows, columns, boardInfo, oppChargeID) {
         for (let i = 0; i < rows; i++) {
             let horizontalSequenceCount = 0;
@@ -74,7 +90,6 @@ class Bot {
                     horizontalSequenceCount = 0;
                 }
                 if(horizontalSequenceCount === 3) {
-                    console.log()
                     if(boardInfo[i][j+1] === 0) {
                         return [i, j+1];
                     }
@@ -117,6 +132,10 @@ class Bot {
         }
         resultMove = this.verticalDefensive(rows, columns, boardInfo, oppChargeID);
         if( resultMove.length !== 0 ) {
+            return resultMove;
+        }
+        resultMove = this.diagonalDefensive(rows, columns, boardInfo, oppChargeID);
+        if( resultMove.length !== 0) {
             return resultMove;
         }
         return [];
