@@ -97,7 +97,17 @@ class Bot {
                     else if (boardInfo[i][j - 3] === 0) {
                         return [i, j - 3];
                     }
-                }
+                } else if (horizontalSequenceCount === 2 && boardInfo[i][j+3] === oppChargeID && (boardInfo[i][j+4] !== oppChargeID ||
+                    boardInfo[i][j+4] === -1)) {
+                        if (boardInfo[i][j+2] === 0) {
+                            return [i, j+2];
+                        }
+                    } else if (horizontalSequenceCount === 2 && boardInfo[i][j-3] === oppChargeID && (boardInfo[i][j-4] !== oppChargeID ||
+                        boardInfo[i][j-4] === -1)) {
+                            if (boardInfo[i][j-2] === 0) {
+                                return [i, j-2];
+                            }
+                        }
             }
         }
         return [];
@@ -214,10 +224,10 @@ class Bot {
         if (resultMove.length !== 0) {
             return resultMove;
         }
-        resultMove = this.diagonalDefensive(rows, columns, boardInfo, oppChargeID);
-        if( resultMove.length !== 0) {
-            return resultMove;
-        }
+        // resultMove = this.diagonalDefensive(rows, columns, boardInfo, oppChargeID);
+        // if( resultMove.length !== 0) {
+        //     return resultMove;
+        // }
         return [];
     }
 
@@ -238,7 +248,17 @@ class Bot {
                     else if (boardInfo[i][j - 3] === 0) {
                         return [i, j - 3];
                     }
-                }
+                } else if (horizontalSequenceCount === 2 && boardInfo[i][j+3] === myChargeID && (boardInfo[i][j+4] !== 0 &&
+                    boardInfo[i][j-4] === -1)) {
+                        if (boardInfo[i][j+2] === 0) {
+                            return [i, j+2]
+                        }
+                    } else if (horizontalSequenceCount === 2 && boardInfo[i][j-3] === myChargeID && (boardInfo[i][j-4] !== 0 &&
+                        boardInfo[i][j-4] === -1)) {
+                            if (boardInfo[i][j+2] === 0) {
+                                return [i, j-2]
+                            }
+                        }
             }
         }
         return [];
@@ -317,7 +337,7 @@ class Bot {
 
     linearOrder(rows, columns, boardInfo) {
         for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < columns; j++) {
+            for (let j = columns/2; j < columns; j++) {
                 if (boardInfo[i][j] === 0) {
                     return [i, j]
                 }
