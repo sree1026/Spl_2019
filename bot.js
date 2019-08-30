@@ -114,6 +114,7 @@ class Bot {
                 }
                 if(verticalSequenceCount === 3) {
                     if(boardInfo[j+1][i] === 0) {
+                        
                         return [j+1, i];
                     }
                     else if(boardInfo[j-3][i] === 0) {
