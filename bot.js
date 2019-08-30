@@ -63,16 +63,16 @@ class Bot {
         console.log("Game over ::", data.result);
     }
     diagonalDefensive(rows, columns, boardInfo, oppChargeID) {
-        for (let i=0; i<rows; i++) {
+        for (let i = 0; i < rows; i++) {
             // let diagonalSequenceCount = 0;
-            for (let j=0; j< columns; j++) {
-                if (i > 3 && boardInfo[i][j] === oppChargeID && boardInfo[i-1][j-1] === oppChargeID && boardInfo[i-2][j-2]=== oppChargeID) {
-                    if (boardInfo[i+1][j+1] === 0) {
-                        return [i+1, j+1];
+            for (let j = 0; j < columns; j++) {
+                if (i > 3 && boardInfo[i][j] === oppChargeID && boardInfo[i - 1][j - 1] === oppChargeID && boardInfo[i - 2][j - 2] === oppChargeID) {
+                    if (boardInfo[i + 1][j + 1] === 0) {
+                        return [i + 1, j + 1];
                     }
-                } else if (i > 3 && boardInfo[i][j] === oppChargeID && boardInfo[i-1][j+1] === oppChargeID && boardInfo[i-2][j+2] === oppChargeID) {
-                    if (boardInfo[i+1][j-1] === 0) {
-                        return [i+1, j-1];
+                } else if (i > 3 && boardInfo[i][j] === oppChargeID && boardInfo[i - 1][j + 1] === oppChargeID && boardInfo[i - 2][j + 2] === oppChargeID) {
+                    if (boardInfo[i + 1][j - 1] === 0) {
+                        return [i + 1, j - 1];
                     }
                 }
             }
@@ -89,25 +89,25 @@ class Bot {
                 else {
                     horizontalSequenceCount = 0;
                 }
-                if(horizontalSequenceCount === 3) {
-                    if(boardInfo[i][j+1] === 0) {
-                        return [i, j+1];
+                if (horizontalSequenceCount === 3) {
+                    if (boardInfo[i][j + 1] === 0) {
+                        return [i, j + 1];
 
                     }
                     else if (boardInfo[i][j - 3] === 0) {
                         return [i, j - 3];
                     }
-                } else if (horizontalSequenceCount === 2 && boardInfo[i][j+3] === oppChargeID && (boardInfo[i][j+4] !== oppChargeID ||
-                    boardInfo[i][j+4] === -1)) {
-                        if (boardInfo[i][j+2] === 0) {
-                            return [i, j+2];
-                        }
-                    } else if (horizontalSequenceCount === 2 && boardInfo[i][j-3] === oppChargeID && (boardInfo[i][j-4] !== oppChargeID ||
-                        boardInfo[i][j-4] === -1)) {
-                            if (boardInfo[i][j-2] === 0) {
-                                return [i, j-2];
-                            }
-                        }
+                }
+                else if (horizontalSequenceCount === 2 && boardInfo[i][j + 2] === oppChargeID && boardInfo[i][j + 3] !== 0 && boardInfo[i][j + 3] !== -1) {
+                    if (boardInfo[i][j + 1] === 0) {
+                        return [i, j + 1];
+                    }
+                }
+                else if (horizontalSequenceCount === 2 && boardInfo[i][j - 3] === oppChargeID && boardInfo[i][j - 4] !== 0 && boardInfo[i][j - 4] !== -1) {
+                    if (boardInfo[i][j - 2] === 0) {
+                        return [i, j - 2];
+                    }
+                }
             }
         }
         return [];
@@ -129,6 +129,16 @@ class Bot {
                     }
                     else if ((boardInfo[j + 1]) && boardInfo[j + 1][i] === 0) {
                         return [j + 1, i];
+                    }
+                }
+                else if (verticalSequenceCount === 2 && boardInfo[j + 2] && boardInfo[j + 2][i] === oppChargeID && boardInfo[j + 3] && boardInfo[j + 3][i] !== 0 && boardInfo[j + 3][i] !== -1) {
+                    if (boardInfo[j + 1][i] === 0) {
+                        return [j + 1, i];
+                    }
+                }
+                else if (verticalSequenceCount === 2 && boardInfo[j - 3] && boardInfo[j - 3][i] === oppChargeID && boardInfo[j - 4] && boardInfo[j - 4][i] !== 0 && boardInfo[j - 4][i] !== -1) {
+                    if (boardInfo[j - 2][i] === 0) {
+                        return [j - 2, i];
                     }
                 }
             }
@@ -224,10 +234,6 @@ class Bot {
         if (resultMove.length !== 0) {
             return resultMove;
         }
-        // resultMove = this.diagonalDefensive(rows, columns, boardInfo, oppChargeID);
-        // if( resultMove.length !== 0) {
-        //     return resultMove;
-        // }
         return [];
     }
 
@@ -248,17 +254,17 @@ class Bot {
                     else if (boardInfo[i][j - 3] === 0) {
                         return [i, j - 3];
                     }
-                } else if (horizontalSequenceCount === 2 && boardInfo[i][j+3] === myChargeID && (boardInfo[i][j+4] !== 0 &&
-                    boardInfo[i][j-4] === -1)) {
-                        if (boardInfo[i][j+2] === 0) {
-                            return [i, j+2]
-                        }
-                    } else if (horizontalSequenceCount === 2 && boardInfo[i][j-3] === myChargeID && (boardInfo[i][j-4] !== 0 &&
-                        boardInfo[i][j-4] === -1)) {
-                            if (boardInfo[i][j+2] === 0) {
-                                return [i, j-2]
-                            }
-                        }
+                }
+                else if (horizontalSequenceCount === 2 && boardInfo[i][j + 2] === myChargeID && boardInfo[i][j + 3] !== 0 && boardInfo[i][j + 3] !== -1) {
+                    if (boardInfo[i][j + 1] === 0) {
+                        return [i, j + 1];
+                    }
+                }
+                else if (horizontalSequenceCount === 2 && boardInfo[i][j - 3] === myChargeID && boardInfo[i][j - 4] !== 0 && boardInfo[i][j - 4] !== -1) {
+                    if (boardInfo[i][j - 2] === 0) {
+                        return [i, j - 2];
+                    }
+                }
             }
         }
         return [];
@@ -280,6 +286,16 @@ class Bot {
                     }
                     else if ((boardInfo[j - 3]) && boardInfo[j - 3][i] === 0) {
                         return [j - 3, i];
+                    }
+                }
+                else if (verticalSequenceCount === 2 && boardInfo[j + 2] && boardInfo[j + 2][i] === myChargeID && boardInfo[j + 3] && boardInfo[j + 3][i] !== 0 && boardInfo[j + 3][i] !== -1) {
+                    if (boardInfo[j + 1][i] === 0) {
+                        return [j + 1, i];
+                    }
+                }
+                else if (verticalSequenceCount === 2 && boardInfo[j - 3] && boardInfo[j - 3][i] === myChargeID && boardInfo[j - 4] && boardInfo[j - 4][i] !== 0 && boardInfo[j - 4][i] !== -1) {
+                    if (boardInfo[j - 2][i] === 0) {
+                        return [j - 2, i];
                     }
                 }
             }
@@ -337,7 +353,7 @@ class Bot {
 
     linearOrder(rows, columns, boardInfo) {
         for (let i = 0; i < rows; i++) {
-            for (let j = columns/2; j < columns; j++) {
+            for (let j = columns / 2; j < columns; j++) {
                 if (boardInfo[i][j] === 0) {
                     return [i, j]
                 }
@@ -369,12 +385,9 @@ class Bot {
             return resultMove;
         }
         resultMove = this.blackHoleAttack(rows, columns, boardInfo, oppChargeID);
-        console.log(gameLoopingCount);
         if (resultMove.length !== 0) {
-            console.log(resultMove);
             if (gameLoopingCount < 1) {
                 gameLoopingCount++;
-                console.log("PostMove" + gameLoopingCount);
                 return resultMove;
             }
             else {
