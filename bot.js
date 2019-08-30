@@ -98,11 +98,82 @@ class Bot {
                     verticalSequenceCount = 0;
                 }
                 if (verticalSequenceCount === 3) {
-                    if ((boardInfo[j + 1]) && boardInfo[j + 1][i] === 0) {
+                    if ((boardInfo[j - 3]) && boardInfo[j - 3][i] === 0) {
+                        return [j - 3, i];
+                    }
+                    else if ((boardInfo[j + 1]) && boardInfo[j + 1][i] === 0) {
                         return [j + 1, i];
                     }
-                    else if ((boardInfo[j - 3]) && boardInfo[j - 3][i] === 0) {
-                        return [j - 3, i];
+                }
+            }
+        }
+        return [];
+    }
+
+    topLeftDiagDefensive(rows, columns, boardInfo, oppChargeID, startRow, startCol) {
+        let TRdiagSequenceCount = 0;
+        for (let i = startRow, j = startCol; i < rows && j < columns; i++ , j++) {
+            if (boardInfo[i][j] === oppChargeID) {
+                TRdiagSequenceCount++;
+            }
+            else {
+                TRdiagSequenceCount = 0;
+            }
+            if (TRdiagSequenceCount === 3) {
+                if ((boardInfo[i - 3]) && boardInfo[i - 3][j - 3] === 0) {
+                    return [i - 3, j - 3];
+                }
+                else if ((boardInfo[i + 1]) && boardInfo[i + 1][j + 1] === 0) {
+                    return [i + 1, j + 1];
+                }
+            }
+        }
+        return [];
+    }
+
+    topLeftToBottomRightCheck(rows, columns, boardInfo, oppChargeID) {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
+                if ((i === 0) || (j === 0)) {
+                    let resultMove = this.topLeftDiagDefensive(rows, columns, boardInfo, oppChargeID, i, j);
+                    if (resultMove.length !== 0) {
+                        return resultMove;
+                    }
+                }
+            }
+        }
+        return [];
+    }
+
+
+    topRightDiagDefensive(rows, columns, boardInfo, oppChargeID, startRow, startCol) {
+        let TRdiagSequenceCount = 0;
+        for (let i = startRow, j = startCol; i < rows && j < columns; i++ , j--) {
+            if (boardInfo[i][j] === oppChargeID) {
+                TRdiagSequenceCount++;
+            }
+            else {
+                TRdiagSequenceCount = 0;
+            }
+            if (TRdiagSequenceCount === 3) {
+                if ((boardInfo[i - 3]) && boardInfo[i - 3][j + 3] === 0) {
+                    return [i - 3, j + 3];
+                }
+                else if ((boardInfo[i + 1]) && boardInfo[i + 1][j - 1] === 0) {
+                    return [i + 1, j - 1];
+                }
+            }
+        }
+        return [];
+    }
+
+    topRightToBottomLeftCheck(rows, columns, boardInfo, oppChargeID) {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
+                if ((i === rows - 1) || (j === columns - 1)) {
+                    let resultMove = this.topRightDiagDefensive(rows, columns, boardInfo, oppChargeID, i, j);
+                    if (resultMove.length !== 0) {
+                        return resultMove;
                     }
                 }
             }
@@ -116,6 +187,14 @@ class Bot {
             return resultMove;
         }
         resultMove = this.verticalDefensive(rows, columns, boardInfo, oppChargeID);
+        if (resultMove.length !== 0) {
+            return resultMove;
+        }
+        resultMove = this.topLeftToBottomRightCheck(rows, columns, boardInfo, oppChargeID);
+        if (resultMove.length !== 0) {
+            return resultMove;
+        }
+        resultMove = this.topRightToBottomLeftCheck(rows, columns, boardInfo, oppChargeID);
         if (resultMove.length !== 0) {
             return resultMove;
         }
@@ -253,7 +332,7 @@ class Bot {
         console.log(gameLoopingCount);
         if (resultMove.length !== 0) {
             console.log(resultMove);
-            if (gameLoopingCount < 2) {
+            if (gameLoopingCount < 1) {
                 gameLoopingCount++;
                 console.log("PostMove" + gameLoopingCount);
                 return resultMove;
